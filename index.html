@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>KoopaApp</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <section class="container">
+    <h1>Registrar mascota</h1>
+
+    <form id="form">
+
+      <h3>👤 Datos del dueño</h3>
+
+      <input type="text" id="nombreUsuario" placeholder="Tu nombre" required><br><br>
+
+      <input type="email" id="email" placeholder="Email"><br><br>
+
+      <input type="text" id="telefono" placeholder="Teléfono" required><br><br>
+
+      <h3>🐶 Datos de la mascota</h3>
+
+      <input type="text" id="nombreMascota" placeholder="Nombre de la mascota" required><br><br>
+
+      <input type="text" id="tipo" placeholder="Tipo (perro, gato...)"><br><br>
+
+      <textarea id="notas" placeholder="Notas"></textarea><br><br>
+
+      <label>Estado:</label><br>
+      <select id="estado">
+        <option value="Activo">Activo</option>
+        <option value="Perdida">Perdida</option>
+        <option value="Encontrada">Encontrada</option>
+      </select><br><br>
+
+      <button type="submit">Generar QR</button>
+
+    </form>
+
+    <h2>QR generado:</h2>
+    <img id="qr" width="200" />
+
+    <p id="link"></p>
+
+  </section>
+
+  <script src="app.js"></script>
+
+</body>
+
+</html>
