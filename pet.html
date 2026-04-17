@@ -23,64 +23,33 @@
     const params = new URLSearchParams(window.location.search);
     const petId = params.get("id");
 
-    const BASE_ID = "appbEqRXSQVE5bToX";
-    const TOKEN = "TU_TOKEN"; // 🔴 MISMO TOKEN
-
     async function cargarDatos() {
       try {
 
-        // 1. Obtener mascota
-        const petRes = await fetch(`https://api.airtable.com/v0/${BASE_ID}/Mascotas/${petId}`, {
-          headers: {
-            Authorization: `Bearer ${TOKEN}`
-          }
-        });
+        // 🔥 LLAMADA A TU BACKEND (NO AIRTABLE)
+        const res = await fetch(`/api/getPet?id=${petId}`);
+        const data = await res.json();
 
-        const petData = await petRes.json();
-
-        if (!petData.fields) {
+        if (!data || data.error) {
           document.getElementById("nombre").innerText = "Mascota no encontrada";
           return;
         }
 
-        const mascota = petData.fields;
-
-        document.getElementById("nombre").innerText = mascota["Nombre de la mascota"] || "Sin nombre";
-        document.getElementById("notas").innerText = mascota["Notas"] || "";
-
-        // 2. Obtener propietario
-        const propietarioId = mascota["Propietario"]?.[0];
-
-        if (!propietarioId) {
-          document.getElementById("telefono").innerText = "Sin contacto";
-          return;
-        }
-
-        // 3. Obtener usuario
-        const userRes = await fetch(`https://api.airtable.com/v0/${BASE_ID}/Usuarios/${propietarioId}`, {
-          headers: {
-            Authorization: `Bearer ${TOKEN}`
-          }
-        });
-
-        const userData = await userRes.json();
-        const usuario = userData.fields;
-
-        const telefono = usuario["telefono"];
+        document.getElementById("nombre").innerText = data.nombre || "Sin nombre";
+        document.getElementById("notas").innerText = data.notas || "";
 
         const telLink = document.getElementById("telefono");
 
-        if (!telefono) {
+        if (data.telefono) {
+          telLink.innerText = "📞 Llamar al dueño";
+          telLink.href = "tel:" + data.telefono;
+        } else {
           telLink.innerText = "Teléfono no disponible";
-          return;
         }
 
-        // 4. Botón llamar
-        telLink.innerText = "📞 Llamar al dueño";
-        telLink.href = "tel:" + telefono;
-
       } catch (error) {
-        console.error("Error:", error);
+        console.error(error);
+        document.getElementById("nombre").innerText = "Error cargando datos";
       }
     }
 
