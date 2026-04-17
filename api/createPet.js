@@ -9,11 +9,11 @@ export default async function handler(req, res) {
   const TOKEN = process.env.AIRTABLE_TOKEN;
 
   try {
-    // 1. Crear usuario
+    // Crear usuario
     const userRes = await fetch(`https://api.airtable.com/v0/${BASE_ID}/Usuarios`, {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${TOKEN}`,
+        Authorization: `Bearer ${TOKEN}`,
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
@@ -32,11 +32,11 @@ export default async function handler(req, res) {
     const userData = await userRes.json();
     const userId = userData.records[0].id;
 
-    // 2. Crear mascota
+    // Crear mascota
     const petRes = await fetch(`https://api.airtable.com/v0/${BASE_ID}/Mascotas`, {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${TOKEN}`,
+        Authorization: `Bearer ${TOKEN}`,
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
@@ -46,7 +46,7 @@ export default async function handler(req, res) {
               "Nombre de la mascota": nombreMascota,
               "Propietario": [userId],
               "Notas": notas,
-              "Estado": estado
+              "Estado": estado || "Activo"
             }
           }
         ]
